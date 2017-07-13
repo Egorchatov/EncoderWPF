@@ -1,0 +1,177 @@
+﻿<Window x:Class="EncoderWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        Title="Encoder" Height="400" Width="525" WindowStartupLocation="CenterScreen">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnWindowsLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="8,8,8,5" Header="Phidget Info">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Height="25">
+                    <TextBlock Text="Attached: " Margin="3,3"/>
+                    <TextBlock Text="{Binding DeviceName, FallbackValue=Nothing}" Margin="10,3,0,0"/>
+                </StackPanel>
+                <Separator/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Version:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Version, FallbackValue=N/A}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding SerialNumberName, FallbackValue=Serial Number:}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding SerialNumber, FallbackValue=N/A}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Channel:" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Channel, FallbackValue=N/A}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Hub Port:" Visibility="{Binding HubPortVisible}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding HubPort, FallbackValue=N/A}" Visibility="{Binding HubPortVisible}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="Remote" Visibility="{Binding RemoteVisible}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+                    <Image Grid.Row="0" Grid.Column="4" Grid.RowSpan="2" Source="{Binding ImageSource}" Visibility="{Binding ImageVisible}"></Image>
+                </Grid>
+
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Grid.Column="0" Margin="8,0,0,8" Header="Settings" IsEnabled="{Binding GroupBoxSettingsEnable}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" IsEnabled="{Binding DataIntervalEnable}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="Data Interval:" VerticalAlignment="Center"/>
+                    <Slider Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="{Binding DataIntervalMinimum}" Maximum="{Binding DataIntervalMaximum}" Value="{Binding DataIntervalValue}"/>
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding DataIntervalMinText, FallbackValue=Min}"  HorizontalAlignment="Left" FontSize="10" Foreground="DimGray"></TextBlock>
+                        <TextBlock Grid.Column="1" Text="{Binding DataIntervalUnitText, FallbackValue=Unit}" HorizontalAlignment="Center" FontSize="10" Foreground="DimGray"></TextBlock>
+                        <TextBlock Grid.Column="2" Text="{Binding DataIntervalMaxText, FallbackValue=Max}" HorizontalAlignment="Right" FontSize="10" Foreground="DimGray"></TextBlock>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1" IsEnabled="{Binding ChangeTriggerEnable}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="Change Trigger:" VerticalAlignment="Center"/>
+                    <Slider Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Minimum="{Binding ChangeTriggerMinimum}" Maximum="{Binding ChangeTriggerMaximum}" Value="{Binding ChangeTriggerValue}" />
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding ChangeTriggerMinText, FallbackValue=Min}" HorizontalAlignment="Left" FontSize="10" Foreground="DimGray"></TextBlock>
+                        <TextBlock Grid.Column="1" Text="{Binding ChangeTriggerUnitText, FallbackValue=Unit}" HorizontalAlignment="Center" FontSize="10" Foreground="DimGray"></TextBlock>
+                        <TextBlock Grid.Column="2" Text="{Binding ChangeTriggerMaxText, FallbackValue=Max}" HorizontalAlignment="Right" FontSize="10" Foreground="DimGray"></TextBlock>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" IsEnabled="{Binding DeviceEnable}" Text="Enabled: " Margin="0,20"/>
+                    <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="{Binding DeviceEnable}" IsChecked="{Binding IsEncoderChecked}"/>
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Counts per revolution"/>
+                    <TextBox Grid.Column="3" VerticalAlignment="Center" Height="20" Text="{Binding CountsPerRevolutionText}"/>
+                    <Button Grid.Column="4" VerticalAlignment="Center" Height="20" Margin="5,0" Content="Set" Command="{Binding SetCountsPerRevolutionCommand}"/>
+                </Grid>
+
+                <Grid Grid.Row="3" IsEnabled="{Binding IoModeEnable}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="IO Mode"/>
+                    <ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="5,0" ItemsSource="{Binding IOModes}" SelectedItem="{Binding SelectedIOMode}"/>
+                </Grid>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="8,0,8,8" Header="Data" IsEnabled="{Binding DataEnable}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"  Text="Position Change: "/>
+                <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="Time Change: "/>
+                <TextBlock Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Text="Position: "/>
+                <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Text="Index Position: "/>
+                <TextBlock Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Text="Velocity: "/>
+
+                <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding PositionChangeText, FallbackValue=N/A}"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding TimeChangeText, FallbackValue=N/A}"/>
+                <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding PositionText, FallbackValue=N/A}"/>
+                <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding IndexPositionText, FallbackValue=N/A}"/>
+                <TextBlock Grid.Column="1" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding VelocityText, FallbackValue=N/A}"/>
+
+                <Button Grid.Column="1" Grid.Row="5" Width="70" Height="30" Content="Reset" Command="{Binding ResetEncoderCommand}"/>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>
